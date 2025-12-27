@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String
+from datetime import date
+from sqlalchemy import Date
 from database import Base
 
 class User(Base):
@@ -19,4 +21,15 @@ class MaintenanceTeam(Base):
     team_name: Mapped[str] = mapped_column(unique=True, index=True)
     team_member_name: Mapped[str] = mapped_column()
     workflow_logic: Mapped[str] = mapped_column()
+    
+
+class Equipment(Base):
+    __tablename__ = "equipment"
+    id : Mapped[int] = mapped_column(primary_key=True, index=True)
+    Equipment_name : Mapped[str] = mapped_column()
+    Serial_Number : Mapped[str] = mapped_column(unique=True,index=True)
+    Company : Mapped[str] = mapped_column(index=True)
+    Purchase_Date : Mapped[date] = mapped_column(Date)
+    Warranty_Info : Mapped[str] = mapped_column()
+    Location : Mapped[str] = mapped_column()
     

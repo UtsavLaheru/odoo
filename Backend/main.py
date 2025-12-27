@@ -8,6 +8,8 @@ import sqlalchemy
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.orm import Session
 import models, database
+from models import Equipment
+from datetime import datetime
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -70,6 +72,39 @@ def fetch_user(email: str, pas: str, db: Session = Depends(get_db)):
     
 @app.get('/view/')
 def view(db: Session = Depends(get_db)):
-    user = db.query(models.User).all()
+    user = db.query(models.Equipment).all()
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="Data Not Found"
+        )
     return user
+    
+
+@app.post('/equipment/')
+def create_equipment(equipment_name: str,serial_number: str,company: str,purchase_date: str,
+    warranty_info: str,location: str,db: Session = Depends(get_db)):
+
+    #Prasing The DateTime to DD-MM-YYYY
+    try:
+        parsed_date = datetime.strptime(purchase_date, "%d-%m-%Y")
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="purchase_date must be in DD-MM-YYYY format (e.g. 01-12-2025)"
+        )
+
+    new_equipment = Equipment(
+        Equipment_name = equipment_name,
+        Serial_Number = serial_number,
+        Company = company,
+        Purchase_Date = parsed_date,
+        Warranty_Info = warranty_info,
+        Location = location
+    )
+    db.add(new_equipment)
+    db.commit()
+    db.refresh(new_equipment)
+
+    return new_equipment
     
