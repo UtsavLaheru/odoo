@@ -26,25 +26,29 @@ Security: Python-jose (JWT)
 📋 Prerequisites
 Ensure you have Python installed. It is recommended to use a virtual environment.
 
-Bash
+```Bash
 
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
 ⚙️ Installation
 Install dependencies:
 
-Bash
+```bash
 
 pip install -r requirment.txt
 Initialize the Database: The system will automatically create the sqllite.db file and necessary tables upon the first run of the application.
+```
 
 🏃 Running the Application
 Start the development server using Uvicorn:
 
-Bash
+```Bash
 
 uvicorn main:app --reload
 The API will be available at http://127.0.0.1:8000. You can access the interactive API documentation at http://127.0.0.1:8000/docs.
+```
 
 📡 API Endpoints
 Authentication
