@@ -1,6 +1,6 @@
-# GearGuard – Frontend
+# GearGuard – Backend
 
-Frontend interface for **GearGuard: The Ultimate Maintenance Tracker**, built as part of the **Odoo X Adani Hackathon**.
+Backend interface for **GearGuard: The Ultimate Maintenance Tracker**, built as part of the **Odoo X Adani Hackathon**.
 
 ⚠️ **Important Note**  
 The frontend depends completely on the backend APIs.  
