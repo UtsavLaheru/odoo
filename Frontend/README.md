@@ -73,6 +73,7 @@ is fetched from the backend APIs.
 
 ## 👥 Contribution Note
 
-- **UI Design**: Created by **Manthan**
+- **UI Design**: Created by **Manthan Vinzuda**
+- **Backend** : Created by **Ajit Chauhan** & **Utsav Laheru**
 - **API Integration & Backend Connection**: Added by our team
 
