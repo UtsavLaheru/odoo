@@ -6,10 +6,13 @@ colorama==0.4.6
 dnspython==2.8.0
 email-validator==2.3.0
 fastapi==0.123.8
+greenlet==3.3.0
 h11==0.16.0
 idna==3.11
 pydantic==2.12.5
 pydantic_core==2.41.5
+SQLAlchemy==2.0.45
+sqlmodel==0.0.30
 starlette==0.50.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
