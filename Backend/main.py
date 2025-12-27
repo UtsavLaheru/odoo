@@ -8,9 +8,8 @@ import sqlalchemy
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.orm import Session
 import models, database
-from datetime import datetime, timedelta
-from jose import jwt
-from fastapi.security import OAuth2PasswordBearer
+from models import Equipment
+from datetime import datetime
 
 models.Base.metadata.create_all(bind=database.engine)
 
@@ -113,47 +112,39 @@ def get_dashboard(token: str = Depends(oauth2_scheme)):
     
 @app.get('/view/')
 def view(db: Session = Depends(get_db)):
-    user = db.query(models.User).all()
+    user = db.query(models.Equipment).all()
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="Data Not Found"
+        )
     return user
     
-@app.post("/request/")
-def create_request(equipment_id: int, subject: str, db: Session = Depends(get_db)):
-    # 1. Fetch Equipment details to auto-fill [cite: 43]
-    equipment = db.query(models.Equipment).filter(models.Equipment.id == equipment_id).first()
-    if not equipment:
-        raise HTTPException(status_code=404, detail="Equipment not found")
-        
-    new_request = models.MaintenanceRequest(
-        subject=subject,
-        equipment_id=equipment_id,
-        team_id=equipment.team_id, # Auto-fill [cite: 43]
-        request_type="Corrective",
-        stage="New" # Starts in New stage [cite: 44]
+
+@app.post('/equipment/')
+def create_equipment(equipment_name: str,serial_number: str,company: str,purchase_date: str,
+    warranty_info: str,location: str,db: Session = Depends(get_db)):
+
+    #Prasing The DateTime to DD-MM-YYYY
+    try:
+        parsed_date = datetime.strptime(purchase_date, "%d-%m-%Y")
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="purchase_date must be in DD-MM-YYYY format (e.g. 01-12-2025)"
+        )
+
+    new_equipment = Equipment(
+        Equipment_name = equipment_name,
+        Serial_Number = serial_number,
+        Company = company,
+        Purchase_Date = parsed_date,
+        Warranty_Info = warranty_info,
+        Location = location
     )
-    db.add(new_request)
+    db.add(new_equipment)
     db.commit()
-    return new_request
+    db.refresh(new_equipment)
 
-@app.patch("/request/{request_id}/move")
-def move_request_stage(request_id: int, new_stage: str, db: Session = Depends(get_db)):
-    request = db.query(models.MaintenanceRequest).filter(models.MaintenanceRequest.id == request_id).first()
+    return new_equipment
     
-    # Execution logic: Update stage and handle Scrap [cite: 46, 72]
-    request.stage = new_stage
-    
-    if new_stage == "Scrap":
-        equipment = db.query(models.Equipment).filter(models.Equipment.id == request.equipment_id).first()
-        equipment.is_usable = False # Mark as no longer usable [cite: 72]
-        
-    db.commit()
-    return {"message": f"Moved to {new_stage}"}
-
-@app.get("/equipment/{equipment_id}/stats")
-def get_equipment_stats(equipment_id: int, db: Session = Depends(get_db)):
-    # Badge: Display count of open requests [cite: 70]
-    request_count = db.query(models.MaintenanceRequest).filter(
-        models.MaintenanceRequest.equipment_id == equipment_id,
-        models.MaintenanceRequest.stage != "Repaired"
-    ).count()
-    
-    return {"open_requests": request_count}
