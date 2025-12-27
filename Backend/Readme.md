@@ -1,79 +1,79 @@
-GearGuard Backend
-GearGuard is a maintenance and equipment management system built with FastAPI and SQLAlchemy. It provides a robust API for user authentication, equipment tracking, and maintenance request processing.
+# GearGuard – Frontend
 
-🚀 Features
-User Authentication: Secure signup and login using JWT (JSON Web Tokens).
+Frontend interface for **GearGuard: The Ultimate Maintenance Tracker**, built as part of the **Odoo X Adani Hackathon**.
 
-Equipment Tracking: Complete lifecycle management for assets including serial numbers, warranty info, and scrap logic.
+⚠️ **Important Note**  
+The frontend depends completely on the backend APIs.  
+👉 **You MUST run the backend first** before opening the frontend files.
 
-Maintenance Requests: Formal request system with priority levels, scheduled dates, and status tracking.
+---
 
-CORS Enabled: Configured to work seamlessly with frontend applications.
+## 📁 Frontend Files
 
-Database Integration: Uses SQLite with SQLAlchemy for reliable data persistence.
+The frontend consists of the following HTML files:
 
-🛠️ Tech Stack
-Framework: FastAPI
+- `log_sign.html`  
+  Login & Signup page (**entry point of the frontend**)
 
-Database: SQLite
+- `Dashboard.html`  
+  Dashboard view  
+- `Equipment.html`  
+  Equipment management interface  
+- `Manegment.html`  
+  Maintenance request management  
+- `Team.html`  
+  Maintenance team management  
+- `Workcenter.html`  
+  Workcenter and maintenance operations view  
+  
+  *(UI created by Manthon, API integration added by us)*
 
-ORM: SQLAlchemy 2.0
+---
 
-Validation: Pydantic
+## 🚀 How to Run the Project (IMPORTANT)
 
-Security: Python-jose (JWT)
+### Step 1️⃣ Run the Backend First
+The backend must be running before opening any frontend page.
 
-📋 Prerequisites
-Ensure you have Python installed. It is recommended to use a virtual environment.
-
-```Bash
-
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-⚙️ Installation
-Install dependencies:
-
+Example:
 ```bash
-
-pip install -r requirment.txt
-Initialize the Database: The system will automatically create the sqllite.db file and necessary tables upon the first run of the application.
-```
-
-🏃 Running the Application
-Start the development server using Uvicorn:
-
-```Bash
-
 uvicorn main:app --reload
-The API will be available at http://127.0.0.1:8000. You can access the interactive API documentation at http://127.0.0.1:8000/docs.
 ```
 
-📡 API Endpoints
-Authentication
-POST /signup/: Register a new user.
+## Step 2️⃣ Open the Frontend
 
-POST /login/: Authenticate and receive a JWT access token.
+After the backend is running:
 
-Dashboard
-GET /dashboard: Protected route to fetch logged-in user profile details.
+1. Open `log_sign.html` in your browser  
+2. Login / Signup  
+3. Navigate through the application using the UI  
 
-Equipment Management
-POST /equipment/: Add new equipment to the system.
+⚠️ **Important:**  
+If the backend is **not running**, API-based features will **not work**.
 
-GET /view_equipment/: Retrieve a list of all registered equipment.
+---
 
-Maintenance Requests
-POST /requestform/: Create a new maintenance request.
+## 🔗 Backend Dependency
 
-GET /view_requests/: Fetch all active maintenance requests.
+The frontend uses APIs built with:
 
-📂 Project Structure
-main.py: Main application entry point containing API routes and logic.
+- **FastAPI**
+- **SQLAlchemy**
+- **Python**
 
-models.py: SQLAlchemy database models (User, Equipment, RequestForm, etc.).
+All data such as:
 
-database.py: Database engine and session configuration.
+- Equipment
+- Maintenance Teams
+- Maintenance Requests
 
-requirment.txt: List of necessary Python packages.
+is fetched from the backend APIs.
+
+---
+
+## 👥 Contribution Note
+
+- **UI Design**: Created by **Manthan Vinzuda**
+- **Backend** : Created by **Ajit Chauhan** & **Utsav Laheru**
+- **API Integration & Backend Connection**: Added by our team
+
